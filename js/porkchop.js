@@ -180,9 +180,9 @@
     init() {
       cv = document.getElementById("pcCanvas"); ctx = cv.getContext("2d");
       tcv = document.getElementById("pcTraj"); tctx = tcv.getContext("2d");
-      const sel = document.getElementById("pcYear");
-      WINDOWS.forEach((w, k) => { const o = document.createElement("option"); o.value = k; o.textContent = w.label; sel.appendChild(o); });
-      sel.value = 0; sel.onchange = () => { winIdx = +sel.value; runCompute(); };
+      const yearSel = document.getElementById("pcYear");
+      WINDOWS.forEach((w, k) => { const o = document.createElement("option"); o.value = k; o.textContent = w.label; yearSel.appendChild(o); });
+      yearSel.value = 0; yearSel.onchange = () => { winIdx = +yearSel.value; runCompute(); };
       document.getElementById("pcCompute").onclick = runCompute;
       document.getElementById("pcOpt").onclick = () => { if (grid) { sel = grid.minIdx.slice(); render(); showCell(sel[0], sel[1]); } };
       cv.addEventListener("click", e => {

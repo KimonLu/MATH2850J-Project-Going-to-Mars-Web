@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>飞向火星 · 轨道转移可视化 | Going to Mars</title>
+<link rel="stylesheet" href="vendor/katex/katex.min.css">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="logo">🚀</span>
+    <div>
+      <h1 data-i18n="title">飞向火星 · 地火轨道转移可视化</h1>
+      <p class="sub" data-i18n="subtitle">MATH2850J 项目一 · 交互式补充材料</p>
+    </div>
+  </div>
+  <button id="langBtn" class="lang-btn">EN</button>
+</header>
+
+<nav id="tabs">
+  <button class="tab active" data-tab="hohmann" data-i18n="tab_hohmann">霍曼转移</button>
+  <button class="tab" data-tab="porkchop" data-i18n="tab_porkchop">Lambert / Porkchop</button>
+  <button class="tab" data-tab="three" data-i18n="tab_three">3D 真实转移</button>
+  <button class="tab" data-tab="formulas" data-i18n="tab_formulas">公式与数据来源</button>
+</nav>
+
+<main>
+  <!-- ===================== Hohmann ===================== -->
+  <section id="hohmann" class="panel active">
+    <div class="viz"><canvas id="hohCanvas" width="640" height="640"></canvas></div>
+    <div class="controls">
+      <h2 data-i18n="h_title">霍曼转移动画</h2>
+      <p class="desc" data-i18n="h_desc">两条共面圆轨道之间的最省能转移。</p>
+      <label><span data-i18n="h_r1">出发轨道半径 r₁ (AU)</span>
+        <input type="range" id="hR1" min="0.4" max="1.5" step="0.01" value="1.0">
+        <output id="hR1v">1.00</output></label>
+      <label><span data-i18n="h_r2">目标轨道半径 r₂ (AU)</span>
+        <input type="range" id="hR2" min="1.0" max="5.2" step="0.01" value="1.52">
+        <output id="hR2v">1.52</output></label>
+      <label><span data-i18n="h_speed">动画速度</span>
+        <input type="range" id="hSpeed" min="0.2" max="4" step="0.1" value="1"></label>
+      <div class="btnrow">
+        <button id="hPlay" data-i18n="play">暂停</button>
+        <button id="hReset" data-i18n="reset">重置</button>
+        <button id="hMars" data-i18n="h_preset">地→火预设</button>
+      </div>
+      <table class="readout">
+        <tr><td data-i18n="r_dv1">Δv₁ (出发)</td><td id="hDv1">—</td></tr>
+        <tr><td data-i18n="r_dv2">Δv₂ (到达)</td><td id="hDv2">—</td></tr>
+        <tr><td data-i18n="r_dvtot">总 Δv (日心)</td><td id="hDvt">—</td></tr>
+        <tr><td data-i18n="r_tof">飞行时间</td><td id="hTof">—</td></tr>
+        <tr><td data-i18n="r_syn">会合周期</td><td id="hSyn">—</td></tr>
+        <tr><td data-i18n="r_phase">发射相位角</td><td id="hPh">—</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== Porkchop ===================== -->
+  <section id="porkchop" class="panel">
+    <div class="viz two">
+      <div><canvas id="pcCanvas" width="440" height="420"></canvas>
+        <div class="cap" data-i18n="pc_cap1">Porkchop：点击图上任意点选取日期对。</div></div>
+      <div><canvas id="pcTraj" width="360" height="420"></canvas>
+        <div class="cap" data-i18n="pc_cap2">对应的真实转移轨迹（日心俯视）。</div></div>
+    </div>
+    <div class="controls">
+      <h2 data-i18n="p_title">Lambert / Porkchop</h2>
+      <div class="explain" id="pcExplain"></div>
+      <label><span data-i18n="p_year">发射窗口起始年份</span>
+        <select id="pcYear"></select></label>
+      <div class="btnrow"><button id="pcCompute" data-i18n="p_recompute">重新计算</button>
+        <button id="pcOpt" data-i18n="p_findopt">定位最优</button></div>
+      <p id="pcStatus" class="status"></p>
+      <table class="readout">
+        <tr><td data-i18n="p_dep">发射日期</td><td id="pcDep">—</td></tr>
+        <tr><td data-i18n="p_arr">到达日期</td><td id="pcArr">—</td></tr>
+        <tr><td data-i18n="r_tof">飞行时间</td><td id="pcTof">—</td></tr>
+        <tr><td>C₃ (dep)</td><td id="pcC3">—</td></tr>
+        <tr><td>v∞ (arr)</td><td id="pcVinf">—</td></tr>
+        <tr><td data-i18n="p_sum">Σ v∞</td><td id="pcSum">—</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== 3D ===================== -->
+  <section id="three" class="panel">
+    <div class="viz"><div id="threeBox"></div></div>
+    <div class="controls">
+      <h2 data-i18n="t_title">3D 真实转移</h2>
+      <div class="explain" id="tExplain"></div>
+      <label><span data-i18n="t_dep">发射日期偏移 (天)</span>
+        <input type="range" id="tDep" min="0" max="700" step="2" value="120">
+        <output id="tDepv"></output></label>
+      <label><span data-i18n="t_tof">飞行时间 (天)</span>
+        <input type="range" id="tTof" min="120" max="400" step="2" value="259">
+        <output id="tTofv">259</output></label>
+      <label><span data-i18n="t_speed">动画速度</span>
+        <input type="range" id="tSpeed" min="0.2" max="4" step="0.1" value="1"></label>
+      <div class="btnrow"><button id="tPlay" data-i18n="play">暂停</button>
+        <button id="tView" data-i18n="t_topview">切换视角</button></div>
+      <table class="readout">
+        <tr><td data-i18n="t_depdate">发射日期</td><td id="tDepDate">—</td></tr>
+        <tr><td data-i18n="t_arrdate">到达日期</td><td id="tArrDate">—</td></tr>
+        <tr><td data-i18n="r_dvtot">Σ v∞</td><td id="tSum">—</td></tr>
+        <tr><td data-i18n="t_inc">转移轨道倾角</td><td id="tInc">—</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===================== Formulas & Sources ===================== -->
+  <section id="formulas" class="panel wide">
+    <div class="formula-wrap">
+      <div class="btnrow" id="fTabs">
+        <button class="ftab active" data-f="i" data-i18n="f_part1">第 i 部分</button>
+        <button class="ftab" data-f="ii" data-i18n="f_part2">第 ii 部分</button>
+        <button class="ftab" data-f="iii" data-i18n="f_part3">第 iii 部分</button>
+        <button class="ftab" data-f="src" data-i18n="f_sources">数据来源</button>
+      </div>
+      <div id="formulasBox" class="formulas"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span data-i18n="foot">轨道力学引擎（Kepler / Lambert / Standish 星历）由本项目 Python 代码移植，数值经交叉验证。</span>
+</footer>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/katex/katex.min.js"></script>
+<script src="vendor/katex/contrib/auto-render.min.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/hohmann.js"></script>
+<script src="js/porkchop.js"></script>
+<script src="js/transfer3d.js"></script>
+<script src="js/formulas.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

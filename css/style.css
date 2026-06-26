@@ -1,0 +1,103 @@
+/* Going to Mars -- interactive visualisation, space theme */
+:root{
+  --bg:#0a0e1a; --bg2:#121829; --panel:#161d33; --ink:#e8edf7;
+  --muted:#9aa7c2; --accent:#5b9dff; --mars:#e0673a; --earth:#3a7bd5;
+  --line:#26304d; --good:#46c98b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:radial-gradient(ellipse at top,#15203a 0%,var(--bg) 60%);
+  color:var(--ink);font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  min-height:100vh;line-height:1.5;
+}
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 26px;border-bottom:1px solid var(--line);
+  background:rgba(10,14,26,.7);backdrop-filter:blur(6px);
+  position:sticky;top:0;z-index:20;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{font-size:30px}
+h1{font-size:20px;font-weight:700;letter-spacing:.5px}
+.sub{font-size:12.5px;color:var(--muted)}
+.lang-btn{
+  background:var(--panel);color:var(--ink);border:1px solid var(--line);
+  border-radius:20px;padding:7px 16px;cursor:pointer;font-size:14px;font-weight:600;
+}
+.lang-btn:hover{border-color:var(--accent)}
+
+nav#tabs{display:flex;gap:6px;padding:14px 26px 0;flex-wrap:wrap}
+.tab{
+  background:transparent;color:var(--muted);border:none;border-bottom:2px solid transparent;
+  padding:10px 16px;cursor:pointer;font-size:15px;font-weight:600;border-radius:6px 6px 0 0;
+}
+.tab:hover{color:var(--ink);background:rgba(91,157,255,.08)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+main{padding:22px 26px 40px;max-width:1180px;margin:0 auto}
+.panel{display:none;grid-template-columns:1fr 360px;gap:24px;align-items:start}
+.panel.active{display:grid}
+@media(max-width:880px){.panel.active{grid-template-columns:1fr}}
+
+.viz{
+  background:var(--bg2);border:1px solid var(--line);border-radius:14px;
+  padding:14px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;
+}
+.viz.two{justify-content:space-between}
+canvas{max-width:100%;border-radius:8px;background:#070b15}
+#threeBox{width:100%;height:560px;border-radius:8px;overflow:hidden;background:#070b15}
+.cap{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px;max-width:440px}
+
+.controls{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;
+}
+.controls h2{font-size:18px;margin-bottom:8px;color:var(--accent)}
+.desc{font-size:13px;color:var(--muted);margin-bottom:16px}
+label{display:block;font-size:13px;margin:12px 0 4px;color:var(--ink)}
+label span{display:inline-block;margin-bottom:4px}
+input[type=range]{width:100%;accent-color:var(--accent);cursor:pointer}
+output{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:600;font-size:12.5px}
+select{width:100%;padding:7px;background:var(--bg2);color:var(--ink);
+  border:1px solid var(--line);border-radius:6px;font-size:14px}
+
+.btnrow{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.btnrow button{
+  flex:1;min-width:90px;background:var(--bg2);color:var(--ink);border:1px solid var(--line);
+  border-radius:8px;padding:9px 10px;cursor:pointer;font-size:13px;font-weight:600;
+}
+.btnrow button:hover{border-color:var(--accent);color:var(--accent)}
+.btnrow button.active{background:var(--accent);color:#0a0e1a;border-color:var(--accent)}
+
+.readout{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+.readout td{padding:7px 4px;border-bottom:1px solid var(--line)}
+.readout td:first-child{color:var(--muted)}
+.readout td:last-child{text-align:right;font-variant-numeric:tabular-nums;
+  font-weight:600;color:var(--good)}
+.status{font-size:12px;color:var(--muted);margin:8px 0;min-height:16px}
+
+footer{text-align:center;font-size:12px;color:var(--muted);
+  padding:18px;border-top:1px solid var(--line)}
+
+/* ---- formulas page & explanations (added) ---- */
+.panel.wide{grid-template-columns:1fr}
+.formula-wrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}
+.ftab{flex:0 0 auto}
+.formulas{margin-top:14px;line-height:1.7;font-size:14.5px}
+.formulas h3{color:var(--accent);font-size:17px;margin:18px 0 8px}
+.formulas h3:first-child{margin-top:4px}
+.formulas p{margin:8px 0;color:var(--ink)}
+.formulas .eq{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+  padding:10px 14px;margin:10px 0;overflow-x:auto}
+.formulas .note{color:var(--muted);font-size:13px}
+.formulas ul{margin:8px 0 8px 22px;color:var(--ink)}
+.formulas li{margin:5px 0}
+.formulas a{color:var(--accent);text-decoration:none;word-break:break-all}
+.formulas a:hover{text-decoration:underline}
+.formulas table.src{width:100%;border-collapse:collapse;margin-top:8px;font-size:13.5px}
+.formulas table.src td{padding:8px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+.formulas table.src td:first-child{color:var(--muted);white-space:nowrap;padding-right:14px}
+.explain{background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;margin-bottom:14px;font-size:13px;line-height:1.65;color:var(--ink)}
+.explain .katex{font-size:1em}
+.explain b{color:var(--accent)}
+.katex{color:var(--ink)}

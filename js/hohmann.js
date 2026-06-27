@@ -57,7 +57,11 @@
 
     // spacecraft along transfer ellipse
     const at = H.at / A.AU, et = H.et, p = at * (1 - et * et);
-    const nu = Math.PI * s;
+    // Kepler timing: mean anomaly advances linearly (equal-area law),
+    // so M = pi*s over the half-ellipse; solve for the true anomaly.
+    const M = Math.PI * s;
+    const E = A.solveKepler(M, et);
+    const nu = A.trueFromEcc(E, et);
     const rr = p / (1 + et * Math.cos(nu));
     const px = cx + rr * sc * Math.cos(nu);
     const py = cy - rr * sc * Math.sin(nu);

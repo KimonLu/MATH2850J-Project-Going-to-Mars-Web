@@ -10,6 +10,7 @@
   let cam = { theta: 0.9, phi: 0.62, r: 24 }, topView = false;
   const baseJD = A.julianDate(2026, 1, 1);
   let arcPts = [], clockDays = 0;             // 0..tof+hold, sim days since departure
+  let craftEl = null, craftM0 = 0, craftDM = 0;   // Kepler timing of the spacecraft
 
   function jdToDate(jd) {
     jd += 0.5; let Z = Math.floor(jd), F = jd - Z, Aa;
@@ -60,10 +61,17 @@
       arcPts = pts;
       const g = new THREE.BufferGeometry().setFromPoints(pts);
       if (transferLine) { transferLine.geometry.dispose(); transferLine.geometry = g; }
+      // Spacecraft timing: mean anomaly grows at the constant rate n=sqrt(mu/a^3),
+      // so M(s) = M0 + n*tof*s.  This makes the craft fast at perihelion (Kepler).
+      craftEl = el;
+      const E0 = 2 * Math.atan2(Math.sqrt(1 - el.e) * Math.sin(el.nu / 2),
+                                Math.sqrt(1 + el.e) * Math.cos(el.nu / 2));
+      craftM0 = E0 - el.e * Math.sin(E0);
+      craftDM = Math.sqrt(A.MU_SUN / Math.pow(el.a, 3)) * tof * A.DAY;
       const vd = A.norm(A.sub(tr.v1, rE.v)), va = A.norm(A.sub(tr.v2, rM.v));
       set("tSum", ((vd + va) / 1e3).toFixed(3) + " km/s");
       set("tInc", (el.inc * 180 / Math.PI).toFixed(2) + "°");
-    } else { set("tSum", "—"); set("tInc", "—"); }
+    } else { craftEl = null; set("tSum", "—"); set("tInc", "—"); }
     set("tDepDate", jdToDate(dep)); set("tArrDate", jdToDate(arr));
     document.getElementById("tDepv").textContent = depOff;
     clockDays = 0;
@@ -130,10 +138,14 @@
     // planets move on the real clock
     earth.position.copy(V3(A.planetState("earth", nowJD).r));
     mars.position.copy(V3(A.planetState("mars", nowJD).r));
-    // spacecraft along the fixed transfer arc
-    if (arcPts.length) {
+    // spacecraft positioned by Kepler timing (fast at perihelion)
+    if (craftEl) {
       const s = Math.min(clockDays / tof, 1);
-      craft.position.copy(arcPts[Math.floor(s * (arcPts.length - 1))]);
+      const Mt = craftM0 + craftDM * s;
+      const E = A.solveKepler(Mt, craftEl.e);
+      const nu = A.trueFromEcc(E, craftEl.e);
+      const st = A.elementsToState(craftEl.a, craftEl.e, craftEl.inc, craftEl.Om, craftEl.om, nu);
+      craft.position.copy(V3(st.r));
       craft.visible = clockDays <= tof + 0.5;
     }
     updateCam(); renderer.render(scene, camera);

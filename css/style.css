@@ -44,9 +44,10 @@ main{padding:22px 26px 40px;max-width:1180px;margin:0 auto}
   padding:14px;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:10px;
 }
 .viz.two{justify-content:space-between}
+.pc-plot{max-width:620px}
 canvas{max-width:100%;border-radius:8px;background:#070b15}
 #threeBox{width:100%;height:560px;border-radius:8px;overflow:hidden;background:#070b15}
-.cap{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px;max-width:440px}
+.cap{font-size:11.5px;color:var(--muted);text-align:center;margin-top:6px;max-width:620px}
 
 .controls{
   background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px;

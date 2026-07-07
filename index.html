@@ -23,6 +23,7 @@
   <button class="tab active" data-tab="hohmann" data-i18n="tab_hohmann">霍曼转移</button>
   <button class="tab" data-tab="porkchop" data-i18n="tab_porkchop">Lambert / Porkchop</button>
   <button class="tab" data-tab="three" data-i18n="tab_three">3D 真实转移</button>
+  <button class="tab" data-tab="flyby">Fly-by / Slingshot</button>
   <button class="tab" data-tab="formulas" data-i18n="tab_formulas">公式与数据来源</button>
 </nav>
 
@@ -116,6 +117,54 @@
     </div>
   </section>
 
+  <section id="flyby" class="panel">
+    <div class="viz flyby-viz">
+      <canvas id="flyCanvas" width="760" height="560"></canvas>
+      <div class="cap">Planet-frame bending keeps |v_inf| constant; heliocentric speed changes because the planet velocity is added back.</div>
+    </div>
+    <div class="controls">
+      <h2>Fly-by / Slingshot</h2>
+      <div class="explain">
+        A gravity assist extends the Lambert design space by rotating the spacecraft's hyperbolic excess velocity at an intermediate planet. Use the controls to compare the planet-centered and heliocentric views.
+      </div>
+      <label><span>View</span>
+        <select id="flyView">
+          <option value="planet">Planet frame</option>
+          <option value="helio">Heliocentric frame</option>
+          <option value="chain">Lambert chain concept</option>
+        </select></label>
+      <label><span>Fly-by planet</span>
+        <select id="flyPlanet">
+          <option value="venus">Venus</option>
+          <option value="earth" selected>Earth</option>
+          <option value="mars">Mars</option>
+          <option value="jupiter">Jupiter</option>
+        </select></label>
+      <label><span>Hyperbolic excess speed v_inf (km/s)</span>
+        <input type="range" id="flyVinf" min="2" max="20" step="0.1" value="8.0">
+        <output id="flyVinfv">8.0</output></label>
+      <label><span>Periapsis altitude (km)</span>
+        <input type="range" id="flyAlt" min="200" max="100000" step="100" value="12000">
+        <output id="flyAltv">12000</output></label>
+      <label><span>Incoming v_inf angle (deg)</span>
+        <input type="range" id="flyAngle" min="-170" max="170" step="1" value="145">
+        <output id="flyAnglev">145</output></label>
+      <label><span>Turn direction</span>
+        <select id="flyTurn">
+          <option value="1">Counter-clockwise</option>
+          <option value="-1" selected>Clockwise</option>
+        </select></label>
+      <table class="readout">
+        <tr><td>Turning angle</td><td id="flyDelta">-</td></tr>
+        <tr><td>Hyperbola eccentricity</td><td id="flyEcc">-</td></tr>
+        <tr><td>Periapsis radius</td><td id="flyRp">-</td></tr>
+        <tr><td>|v_before|</td><td id="flyBefore">-</td></tr>
+        <tr><td>|v_after|</td><td id="flyAfter">-</td></tr>
+        <tr><td>Heliocentric speed change</td><td id="flyGain">-</td></tr>
+      </table>
+    </div>
+  </section>
+
   <section id="formulas" class="panel wide">
     <div class="formula-wrap">
       <div class="btnrow" id="fTabs">
@@ -142,6 +191,7 @@
 <script src="js/hohmann.js"></script>
 <script src="js/porkchop.js"></script>
 <script src="js/transfer3d.js"></script>
+<script src="js/flyby.js"></script>
 <script src="js/formulas.js"></script>
 <script src="js/app.js"></script>
 </body>

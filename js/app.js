@@ -5,6 +5,7 @@
     hohmann: global.ModHohmann,
     porkchop: global.ModPork,
     three: global.ModThree,
+    flyby: global.ModFlyby,
     formulas: global.ModFormulas,
   };
   let current = "hohmann";

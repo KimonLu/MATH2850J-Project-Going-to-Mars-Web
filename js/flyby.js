@@ -7,6 +7,8 @@
     mars: { mu: 42828.375214, radius: 3396.19, speed: 24.13, color: "#ef7858" },
     jupiter: { mu: 126712764.1, radius: 71492.0, speed: 13.07, color: "#d99d68" },
   };
+  const ALTITUDE_MIN = 100;
+  const ALTITUDE_MAX = 10000000;
   const FALLBACK = {
     fly_explain_planet: "Planet-centred, two-body hyperbola. Historical presets reproduce only the supplied encounter scalars, not a complete navigation reconstruction.",
     fly_explain_helio: "Ideal planar vector addition. Adjust the incoming direction to see why heliocentric speed can rise or fall while |v∞| is conserved in the planet frame.",
@@ -44,6 +46,17 @@
   function planetName() { return i18n(`fly_planet_${planetSel.value}`); }
   function number(value, digits) { return Number(value).toLocaleString(undefined, { maximumFractionDigits: digits }); }
 
+  function altitudeFromSlider() {
+    const fraction = Number(altSlider.value) / Number(altSlider.max);
+    return ALTITUDE_MIN * Math.pow(ALTITUDE_MAX / ALTITUDE_MIN, fraction);
+  }
+
+  function setAltitude(altitude) {
+    const bounded = clamp(Number(altitude), ALTITUDE_MIN, ALTITUDE_MAX);
+    const fraction = Math.log(bounded / ALTITUDE_MIN) / Math.log(ALTITUDE_MAX / ALTITUDE_MIN);
+    altSlider.value = String(fraction * Number(altSlider.max));
+  }
+
   function selectedEvent() {
     const events = global.FLYBY_EVENTS || [];
     return events.find(event => event.id === eventSel.value) || null;
@@ -52,7 +65,7 @@
   function state() {
     const planet = PLANETS[planetSel.value] || PLANETS.jupiter;
     const vinf = Number(vinfSlider.value);
-    const altitude = Number(altSlider.value);
+    const altitude = altitudeFromSlider();
     const rp = planet.radius + altitude;
     const ah = -planet.mu / (vinf * vinf);
     const ecc = 1 + rp * vinf * vinf / planet.mu;
@@ -154,10 +167,10 @@
     ctx.beginPath(); ctx.arc(cx, cy, planetRadius, 0, Math.PI * 2); ctx.fill();
 
     const peri = toCanvas(s.rp, 0);
-    ctx.fillStyle = "#46c98b";
+    ctx.fillStyle = "#ffcc55";
     ctx.beginPath(); ctx.arc(peri.x, peri.y, 4, 0, Math.PI * 2); ctx.fill();
-    line(cx, cy, peri.x, peri.y, "rgba(70,201,139,.7)", 1, [4, 4]);
-    ctx.fillStyle = "#46c98b";
+    line(cx, cy, peri.x, peri.y, "rgba(154,167,194,.55)", 1, [4, 4]);
+    ctx.fillStyle = "#9aa7c2";
     ctx.font = "12px Segoe UI, sans-serif";
     ctx.fillText("rₚ", (cx + peri.x) / 2, cy - 8);
 
@@ -165,14 +178,34 @@
       arrow(points[7].x, points[7].y, points[24].x, points[24].y, "#7fb3ff", "v∞−");
       arrow(points[points.length - 25].x, points[points.length - 25].y, points[points.length - 8].x, points[points.length - 8].y, "#ffcc55", "v∞+");
     }
-    const arcRadius = Math.max(planetRadius + 20, s.rp * scale * 1.16);
+    const velocityOrigin = { x: plot.left + 118, y: plot.top + 110 };
+    const incomingDirection = Math.PI - thetaInf;
+    const outgoingDirection = thetaInf;
+    const velocityLength = 64;
+    const velocityEnd = angle => ({
+      x: velocityOrigin.x + velocityLength * Math.cos(angle),
+      y: velocityOrigin.y - velocityLength * Math.sin(angle),
+    });
+    const incomingEnd = velocityEnd(incomingDirection);
+    const outgoingEnd = velocityEnd(outgoingDirection);
+    arrow(velocityOrigin.x, velocityOrigin.y, incomingEnd.x, incomingEnd.y, "#7fb3ff", "v∞−");
+    arrow(velocityOrigin.x, velocityOrigin.y, outgoingEnd.x, outgoingEnd.y, "#ffcc55", "v∞+");
+
+    const arcRadius = 38;
     ctx.strokeStyle = "#46c98b";
     ctx.lineWidth = 1.8;
     ctx.beginPath();
-    ctx.arc(cx, cy, arcRadius, -thetaInf, thetaInf, false);
+    for (let index = 0; index <= 32; index++) {
+      const angle = incomingDirection + (outgoingDirection - incomingDirection) * index / 32;
+      const x = velocityOrigin.x + arcRadius * Math.cos(angle);
+      const y = velocityOrigin.y - arcRadius * Math.sin(angle);
+      if (index) ctx.lineTo(x, y);
+      else ctx.moveTo(x, y);
+    }
     ctx.stroke();
     ctx.fillStyle = "#46c98b";
-    ctx.fillText(`δ = ${deg(s.delta).toFixed(1)}°`, cx + arcRadius + 8, cy - 5);
+    ctx.font = "12px Segoe UI, sans-serif";
+    ctx.fillText(`δ = ${deg(s.delta).toFixed(1)}°`, velocityOrigin.x + arcRadius + 12, velocityOrigin.y - 18);
   }
 
   function vectorPoint(origin, vector, scale) { return { x: origin.x + vector.x * scale, y: origin.y - vector.y * scale }; }
@@ -229,7 +262,7 @@
     const event = selectedEvent();
     if (!event) return;
     vinfSlider.value = String(event.vinf);
-    altSlider.value = String(event.altitude);
+    setAltitude(event.altitude);
   }
 
   function updateModeUi() {
@@ -281,6 +314,7 @@
       altSlider = byId("flyAlt");
       angleSlider = byId("flyAngle");
       turnSel = byId("flyTurn");
+      setAltitude(280000);
       updateEventOptions();
       bindInput(viewSel, () => {
         if (viewSel.value === "helio") modeSel.value = "free";

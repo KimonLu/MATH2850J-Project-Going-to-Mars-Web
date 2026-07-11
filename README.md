@@ -13,7 +13,7 @@ This repository hosts the static visualization website for **Questions 1-3** of 
 
 - Course: **MATH2850J**
 - Project: **Going to Mars**
-- Scope: **Questions 1-3**
+- Scope: **Questions 1-4**
 - Professor: **Horst Hohberger**
 - Group: **Group 19**
 - Members: **Zhuo Chen, Chenming Tao, Peikai Mao, Kemeng Lu**
@@ -36,4 +36,4 @@ The orbital operation, computation, and visualization code were completed with a
 
 All AI-assisted code related to orbital operation, computation, and visualization was carefully and manually checked by the group members. The frontend website was built based on these reviewed computational and visualization components.
 
-The frontend code of this website was completed entirely by Claude, because frontend implementation is not the core focus of this mathematical project. Its purpose is only to provide a clearer and more convenient presentation of the group’s results.
+The frontend code of this website was completed entirely by Claude and Codex, because frontend implementation is not the core focus of this mathematical project. Its purpose is only to provide a clearer and more convenient presentation of the group’s results.

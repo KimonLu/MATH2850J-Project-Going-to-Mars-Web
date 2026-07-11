@@ -14,8 +14,7 @@
     fly_cap_helio: "All arrows share one km/s scale. The displayed heliocentric speed change depends on the chosen incoming direction.",
     fly_no_events: "No supplied historical event is available for Mars. Use free parameters instead.",
     fly_event_note: "Preset scalars from the supplied historical-event table. Source",
-    fly_report_note: "Report reference configuration: Jupiter, h = 280,000 km, v∞ = 10.8 km/s.",
-    fly_ref_title: "Jupiter reference fly-by",
+    fly_planet_frame_title: "fly-by geometry",
     fly_helio_title: "Heliocentric velocity vectors",
     fly_scale: "scale",
     fly_km: "km",
@@ -42,6 +41,7 @@
     const value = global.I18N && global.I18N.t ? global.I18N.t(key) : key;
     return value === key ? (FALLBACK[key] || key) : value;
   }
+  function planetName() { return i18n(`fly_planet_${planetSel.value}`); }
   function number(value, digits) { return Number(value).toLocaleString(undefined, { maximumFractionDigits: digits }); }
 
   function selectedEvent() {
@@ -108,7 +108,7 @@
   }
 
   function drawPlanetFrame(s) {
-    fillBackground(i18n("fly_ref_title"), i18n("fly_cap_planet"));
+    fillBackground(`${planetName()} ${i18n("fly_planet_frame_title")}`, i18n("fly_cap_planet"));
     const plot = { left: 66, right: cv.width - 34, top: 84, bottom: cv.height - 72 };
     const cx = (plot.left + plot.right) / 2;
     const cy = (plot.top + plot.bottom) / 2;
@@ -120,6 +120,7 @@
     line(cx, plot.top, cx, plot.bottom, "rgba(154,167,194,.2)", 1);
     ctx.fillStyle = "#9aa7c2";
     ctx.font = "11px Segoe UI, sans-serif";
+    ctx.fillText(i18n("fly_legend"), plot.left, 75);
     ctx.fillText(`1 px = ${number(1 / scale, 0)} ${i18n("fly_km")}`, plot.left, cv.height - 34);
 
     const thetaInf = Math.acos(-1 / s.ecc);
@@ -177,7 +178,7 @@
   function vectorPoint(origin, vector, scale) { return { x: origin.x + vector.x * scale, y: origin.y - vector.y * scale }; }
 
   function drawHelioFrame(s) {
-    fillBackground(i18n("fly_helio_title"), i18n("fly_cap_helio"));
+    fillBackground(`${planetName()} ${i18n("fly_helio_title")}`, i18n("fly_cap_helio"));
     const origin = { x: cv.width * 0.48, y: cv.height * 0.58 };
     const maxSpeed = Math.max(1, len(s.before), len(s.after), s.planet.speed + s.vinf);
     const scale = Math.min(8.5, 240 / maxSpeed);
@@ -185,11 +186,6 @@
       const end = vectorPoint(origin, vector, scale);
       arrow(origin.x, origin.y, end.x, end.y, color, label);
     };
-    ctx.fillStyle = s.planet.color;
-    ctx.beginPath(); ctx.arc(origin.x, origin.y, 13, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#c8d2e8";
-    ctx.font = "12px Segoe UI, sans-serif";
-    ctx.fillText(planetSel.options[planetSel.selectedIndex].text, origin.x - 25, origin.y + 34);
     drawVector(s.vp, "#9aa7c2", "vₚ");
     drawVector(s.vin, "#7fb3ff", "v∞−");
     drawVector(s.vout, "#ffcc55", "v∞+");
@@ -241,16 +237,19 @@
     document.querySelectorAll(".fly-planet-only").forEach(element => element.hidden = !planetView);
     document.querySelectorAll(".fly-helio-only").forEach(element => element.hidden = planetView);
     const history = planetView && modeSel.value === "history";
-    eventSel.disabled = !history || !eventSel.options.length;
-    vinfSlider.disabled = history && eventSel.options.length > 0;
-    altSlider.disabled = history && eventSel.options.length > 0;
-    const event = selectedEvent();
+    const hasEvents = eventSel.options.length > 0;
     const status = byId("flyEventStatus");
-    if (!planetView) status.textContent = "";
+    byId("flyEventRow").hidden = !history;
+    status.hidden = !history;
+    eventSel.disabled = !history || !hasEvents;
+    vinfSlider.disabled = history && hasEvents;
+    altSlider.disabled = history && hasEvents;
+    const event = selectedEvent();
+    if (!planetView || !history) status.textContent = "";
     else if (history && !event) status.textContent = i18n("fly_no_events");
     else if (history && event) {
       status.innerHTML = `${i18n("fly_event_note")}: <a href="${event.source}" target="_blank" rel="noreferrer">${event.source}</a>`;
-    } else status.textContent = i18n("fly_report_note");
+    }
     byId("flyExplain").textContent = i18n(planetView ? "fly_explain_planet" : "fly_explain_helio");
     byId("flyCap").textContent = i18n(planetView ? "fly_cap_planet" : "fly_cap_helio");
   }
@@ -298,15 +297,6 @@
       });
       bindInput(eventSel, () => { applyEvent(); render(); });
       [vinfSlider, altSlider, angleSlider, turnSel].forEach(bindInput);
-      byId("flyReportRef").onclick = () => {
-        viewSel.value = "planet";
-        planetSel.value = "jupiter";
-        modeSel.value = "free";
-        vinfSlider.value = "10.8";
-        altSlider.value = "280000";
-        updateEventOptions();
-        render();
-      };
       ready = true;
     },
     onShow() { render(); },

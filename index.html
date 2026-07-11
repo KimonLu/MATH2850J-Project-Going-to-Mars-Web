@@ -23,7 +23,7 @@
   <button class="tab active" data-tab="hohmann" data-i18n="tab_hohmann">霍曼转移</button>
   <button class="tab" data-tab="porkchop" data-i18n="tab_porkchop">Lambert / Porkchop</button>
   <button class="tab" data-tab="three" data-i18n="tab_three">3D 真实转移</button>
-  <button class="tab" data-tab="flyby">Fly-by / Slingshot</button>
+  <button class="tab" data-tab="flyby" data-i18n="tab_flyby">Fly-by / Slingshot</button>
   <button class="tab" data-tab="formulas" data-i18n="tab_formulas">公式与数据来源</button>
 </nav>
 
@@ -120,46 +120,56 @@
   <section id="flyby" class="panel">
     <div class="viz flyby-viz">
       <canvas id="flyCanvas" width="760" height="560"></canvas>
-      <div class="cap">Planet-frame bending keeps |v_inf| constant; heliocentric speed changes because the planet velocity is added back.</div>
+      <div class="cap" id="flyCap" data-i18n="fly_cap">行星中心视图展示严格的二体双曲线；日心视图展示平面速度矢量叠加。</div>
     </div>
     <div class="controls">
-      <h2>Fly-by / Slingshot</h2>
-      <div class="explain">
-        A gravity assist extends the Lambert design space by rotating the spacecraft's hyperbolic excess velocity at an intermediate planet. Use the controls to compare the planet-centered and heliocentric views.
-      </div>
-      <label><span>View</span>
+      <h2 data-i18n="fly_title">Fly-by / Slingshot</h2>
+      <div class="explain" id="flyExplain"></div>
+      <label><span data-i18n="fly_view">视图</span>
         <select id="flyView">
-          <option value="planet">Planet frame</option>
-          <option value="helio">Heliocentric frame</option>
-          <option value="chain">Lambert chain concept</option>
+          <option value="planet" data-i18n="fly_view_planet">行星中心</option>
+          <option value="helio" data-i18n="fly_view_helio">日心速度矢量</option>
         </select></label>
-      <label><span>Fly-by planet</span>
+      <label><span data-i18n="fly_planet">飞掠行星</span>
         <select id="flyPlanet">
-          <option value="venus" selected>Venus</option>
-          <option value="mars">Mars</option>
-          <option value="jupiter">Jupiter</option>
+          <option value="venus" data-i18n="fly_planet_venus">Venus</option>
+          <option value="mars" data-i18n="fly_planet_mars">Mars</option>
+          <option value="jupiter" selected data-i18n="fly_planet_jupiter">Jupiter</option>
         </select></label>
-      <label><span>Hyperbolic excess speed v_inf (km/s)</span>
-        <input type="range" id="flyVinf" min="2" max="20" step="0.1" value="8.0">
-        <output id="flyVinfv">8.0</output></label>
-      <label><span>Periapsis altitude (km)</span>
-        <input type="range" id="flyAlt" min="200" max="100000" step="100" value="12000">
-        <output id="flyAltv">12000</output></label>
-      <label><span>Incoming v_inf angle (deg)</span>
-        <input type="range" id="flyAngle" min="-170" max="170" step="1" value="145">
+      <label class="fly-planet-only"><span data-i18n="fly_mode">参数模式</span>
+        <select id="flyMode">
+          <option value="free" data-i18n="fly_mode_free">自由参数</option>
+          <option value="history" data-i18n="fly_mode_history">历史事件</option>
+        </select></label>
+      <label class="fly-planet-only" id="flyEventRow"><span data-i18n="fly_event">历史事件</span>
+        <select id="flyEvent"></select></label>
+      <p class="status fly-planet-only" id="flyEventStatus"></p>
+      <div class="btnrow fly-planet-only">
+        <button id="flyReportRef" data-i18n="fly_report_ref">报告木星参考案例</button>
+      </div>
+      <label><span data-i18n="fly_vinf">双曲线剩余速度 v∞ (km/s)</span>
+        <input type="range" id="flyVinf" min="2" max="25" step="0.1" value="10.8">
+        <output id="flyVinfv">10.8</output></label>
+      <label><span data-i18n="fly_alt">距行星表面高度 h (km)</span>
+        <input type="range" id="flyAlt" min="100" max="10000000" step="100" value="280000">
+        <output id="flyAltv">280000</output></label>
+      <label class="fly-helio-only"><span data-i18n="fly_angle">入射 v∞ 方向 (deg)</span>
+        <input type="range" id="flyAngle" min="-180" max="180" step="1" value="145">
         <output id="flyAnglev">145</output></label>
-      <label><span>Turn direction</span>
+      <label class="fly-helio-only"><span data-i18n="fly_turn">转向方向</span>
         <select id="flyTurn">
-          <option value="1">Counter-clockwise</option>
-          <option value="-1" selected>Clockwise</option>
+          <option value="1" data-i18n="fly_ccw">逆时针</option>
+          <option value="-1" selected data-i18n="fly_cw">顺时针</option>
         </select></label>
       <table class="readout">
-        <tr><td>Turning angle</td><td id="flyDelta">-</td></tr>
-        <tr><td>Hyperbola eccentricity</td><td id="flyEcc">-</td></tr>
-        <tr><td>Periapsis radius</td><td id="flyRp">-</td></tr>
-        <tr><td>|v_before|</td><td id="flyBefore">-</td></tr>
-        <tr><td>|v_after|</td><td id="flyAfter">-</td></tr>
-        <tr><td>Heliocentric speed change</td><td id="flyGain">-</td></tr>
+        <tr><td data-i18n="fly_rp">近拱点半径 rp</td><td id="flyRp">-</td></tr>
+        <tr><td data-i18n="fly_a">双曲线半长轴 ah</td><td id="flyA">-</td></tr>
+        <tr><td data-i18n="fly_e">双曲线偏心率 eh</td><td id="flyEcc">-</td></tr>
+        <tr><td data-i18n="fly_delta">转向角 δ</td><td id="flyDelta">-</td></tr>
+        <tr><td data-i18n="fly_vector_dv">Δv∞,vector</td><td id="flyVectorDv">-</td></tr>
+        <tr class="fly-helio-only"><td data-i18n="fly_before">|vbefore|</td><td id="flyBefore">-</td></tr>
+        <tr class="fly-helio-only"><td data-i18n="fly_after">|vafter|</td><td id="flyAfter">-</td></tr>
+        <tr class="fly-helio-only"><td data-i18n="fly_helio_dv">Δ|v|helio</td><td id="flyGain">-</td></tr>
       </table>
     </div>
   </section>
@@ -190,6 +200,7 @@
 <script src="js/hohmann.js"></script>
 <script src="js/porkchop.js"></script>
 <script src="js/transfer3d.js"></script>
+<script src="js/flyby_events.js"></script>
 <script src="js/flyby.js"></script>
 <script src="js/formulas.js"></script>
 <script src="js/app.js"></script>

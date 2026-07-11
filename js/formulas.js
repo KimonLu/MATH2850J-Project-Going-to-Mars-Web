@@ -99,9 +99,35 @@
       \left[\sqrt{v_{\infty,M}^2+\dfrac{2\mu_M}{r_{\mathrm{LMO}}}}-\sqrt{\dfrac{\mu_M}{r_{\mathrm{LMO}}}}\right].$$</div>
       <p class="note">For the 2026-2027 opportunity, the report lists the minimum-total-Δv design, the minimum-C3 design, the fastest point within minimum total Δv + 0.5 km/s, and a time-total-Δv Pareto compromise.</p>`,
     ],
+    iv: [
+      R`<h3>(iv) 飞掠与引力弹弓</h3>
+      <p>在行星中心二体 patched-conic 近似中，航天器在无穷远处的双曲线剩余速度为 $v_\infty$：</p>
+      <div class="eq">$$\frac12v^2-\frac{\mu_P}{r}=\frac12v_\infty^2,\qquad r_p=R_P+h.$$</div>
+      <p>双曲线轨迹及其几何参数为</p>
+      <div class="eq">$$r(\theta)=\frac{p}{1+e_h\cos\theta},\qquad p=r_p(1+e_h),\qquad a_h=-\frac{\mu_P}{v_\infty^2},\qquad e_h=1+\frac{r_pv_\infty^2}{\mu_P}>1.$$</div>
+      <p>双曲线两支渐近线之间的转向角和 $v_\infty$ 矢量改变量为</p>
+      <div class="eq">$$\delta=2\arcsin\!\left(\frac1{e_h}\right),\qquad \Delta v_{\infty,\mathrm{vector}}=2v_\infty\sin\!\left(\frac\delta2\right).$$</div>
+      <h3>日心参考系</h3>
+      <div class="eq">$$\mathbf v_{\mathrm{before}}=\mathbf v_P+\mathbf v_\infty^-,\qquad \mathbf v_{\mathrm{after}}=\mathbf v_P+\mathbf v_\infty^+.$$</div>
+      <p class="note">$\Delta v_{\infty,\mathrm{vector}}$ 是相对速度矢量旋转的模长，并不等同于 $\Delta\lvert\mathbf v\rvert_{\mathrm{helio}}$。后者还取决于入射方向和完整的遭遇几何。</p>
+      <p class="note">报告木星参考案例：$h=280000\ \mathrm{km}$，$v_\infty=10.8\ \mathrm{km/s}$，给出 $r_p=351492\ \mathrm{km}$，$a_h=-1086358\ \mathrm{km}$，$e_h=1.324$，$\delta=98.1^\circ$，$\Delta v_{\infty,\mathrm{vector}}=16.32\ \mathrm{km/s}$。</p>`,
+      R`<h3>(iv) Fly-by and gravity assist</h3>
+      <p>In a planet-centred two-body patched-conic approximation, the hyperbolic excess speed is $v_\infty$:</p>
+      <div class="eq">$$\frac12v^2-\frac{\mu_P}{r}=\frac12v_\infty^2,\qquad r_p=R_P+h.$$</div>
+      <p>The hyperbolic trajectory and its geometric parameters are</p>
+      <div class="eq">$$r(\theta)=\frac{p}{1+e_h\cos\theta},\qquad p=r_p(1+e_h),\qquad a_h=-\frac{\mu_P}{v_\infty^2},\qquad e_h=1+\frac{r_pv_\infty^2}{\mu_P}>1.$$</div>
+      <p>The turning angle between asymptotes and the change in the $v_\infty$ vector are</p>
+      <div class="eq">$$\delta=2\arcsin\!\left(\frac1{e_h}\right),\qquad \Delta v_{\infty,\mathrm{vector}}=2v_\infty\sin\!\left(\frac\delta2\right).$$</div>
+      <h3>Heliocentric frame</h3>
+      <div class="eq">$$\mathbf v_{\mathrm{before}}=\mathbf v_P+\mathbf v_\infty^-,\qquad \mathbf v_{\mathrm{after}}=\mathbf v_P+\mathbf v_\infty^+.$$</div>
+      <p class="note">$\Delta v_{\infty,\mathrm{vector}}$ is the magnitude of the rotated relative-velocity vector. It is not the same quantity as $\Delta\lvert\mathbf v\rvert_{\mathrm{helio}}$, which also depends on the incoming direction and the full encounter geometry.</p>
+      <p class="note">Report Jupiter reference case: $h=280000\ \mathrm{km}$ and $v_\infty=10.8\ \mathrm{km/s}$ give $r_p=351492\ \mathrm{km}$, $a_h=-1086358\ \mathrm{km}$, $e_h=1.324$, $\delta=98.1^\circ$, and $\Delta v_{\infty,\mathrm{vector}}=16.32\ \mathrm{km/s}$.</p>`,
+    ],
     src: [
       R`<h3>数据来源与建模范围</h3>
       <table class="src">
+        <tr><td>Q4 行星常数</td><td>飞掠页面使用：金星 $\mu_V=324858.592\ \mathrm{km^3/s^2}$，$R_V=6051.8\ \mathrm{km}$，$V_V=35.02\ \mathrm{km/s}$；火星 $\mu_M=42828.375214\ \mathrm{km^3/s^2}$，$R_M=3396.19\ \mathrm{km}$，$V_M=24.13\ \mathrm{km/s}$；木星 $\mu_J=126712764.1\ \mathrm{km^3/s^2}$，$R_J=71492\ \mathrm{km}$，$V_J=13.07\ \mathrm{km/s}$。$V_P$ 是日心平面矢量演示用的典型速度，不是某一历史事件的 DE440s 状态。</td></tr>
+        <tr><td>Q4 来源与边界</td><td>GM 取 NAIF DE440 常数，半径取 NAIF PCK。历史预设字段为任务名、UTC 日期、行星、表面高度和 $v_\infty$，来自项目提供的 <code>historical_flyby_events.csv</code>；这些标量足以重建行星中心二体几何，但不足以重建完整三维导航轨迹。<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de440.tpc" target="_blank">NAIF gm_de440.tpc</a>；<a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc" target="_blank">NAIF pck00011.tpc</a></td></tr>
         <tr><td>星历</td><td>NASA/JPL DE440s SPK kernel，ECLIPJ2000 几何状态；网页静态数据由报告脚本从本地 kernel 采样生成。<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp" target="_blank">NAIF de440s.bsp</a></td></tr>
         <tr><td>引力参数与半径</td><td>引力参数来自 DE440 kernel 常数：$\mu_\odot=132712440041.279388$，$\mu_E=398600.435507$，$\mu_M=42828.373621\ \mathrm{km^3/s^2}$；行星半径来自 NAIF PCK：$R_E=6378.1366\ \mathrm{km}$，$R_M=3396.19\ \mathrm{km}$。泊车轨道半径取对应天体半径加高度：地球 200 km LEO，火星 250 km LMO。<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440_tech-comments.txt" target="_blank">JPL DE440 technical comments</a>；<a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc" target="_blank">NAIF pck00011.tpc</a></td></tr>
         <tr><td>Lambert 求解</td><td>零圈顺行、日心二体 Lambert；通用变量 Lagrange $f,g$ 形式，与报告 Python 脚本一致。</td></tr>
@@ -111,6 +137,8 @@
       </table>`,
       R`<h3>Data sources and model scope</h3>
       <table class="src">
+        <tr><td>Q4 planetary constants</td><td>The fly-by page uses: Venus $\mu_V=324858.592\ \mathrm{km^3/s^2}$, $R_V=6051.8\ \mathrm{km}$, $V_V=35.02\ \mathrm{km/s}$; Mars $\mu_M=42828.375214\ \mathrm{km^3/s^2}$, $R_M=3396.19\ \mathrm{km}$, $V_M=24.13\ \mathrm{km/s}$; Jupiter $\mu_J=126712764.1\ \mathrm{km^3/s^2}$, $R_J=71492\ \mathrm{km}$, $V_J=13.07\ \mathrm{km/s}$. $V_P$ is a representative speed for the heliocentric planar-vector demonstration, not a DE440s state at a historical encounter.</td></tr>
+        <tr><td>Q4 sources and boundary</td><td>GM values use NAIF DE440 constants and radii use the NAIF PCK. Historical presets contain mission name, UTC date, planet, surface altitude, and $v_\infty$ from the project-supplied <code>historical_flyby_events.csv</code>. These scalars are sufficient for planet-centred two-body geometry but not for a complete three-dimensional navigation reconstruction.<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/gm_de440.tpc" target="_blank">NAIF gm_de440.tpc</a>; <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc" target="_blank">NAIF pck00011.tpc</a></td></tr>
         <tr><td>Ephemeris</td><td>NASA/JPL DE440s SPK kernel, geometric states in ECLIPJ2000; the website's static data are sampled from the local kernel by the report script.<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440s.bsp" target="_blank">NAIF de440s.bsp</a></td></tr>
         <tr><td>GM and radii</td><td>Gravitational parameters come from the DE440 kernel constants: $\mu_\odot=132712440041.279388$, $\mu_E=398600.435507$, and $\mu_M=42828.373621\ \mathrm{km^3/s^2}$; planetary radii come from the NAIF PCK: $R_E=6378.1366\ \mathrm{km}$ and $R_M=3396.19\ \mathrm{km}$. Parking-orbit radii are the body radius plus altitude: 200 km circular LEO and 250 km circular LMO.<br><a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/spk/planets/de440_tech-comments.txt" target="_blank">JPL DE440 technical comments</a>; <a href="https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc" target="_blank">NAIF pck00011.tpc</a></td></tr>
         <tr><td>Lambert solver</td><td>Zero-revolution prograde heliocentric two-body Lambert transfer using the universal-variable Lagrange $f,g$ form, matching the report Python script.</td></tr>

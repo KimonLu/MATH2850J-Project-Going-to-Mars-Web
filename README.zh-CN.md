@@ -9,11 +9,11 @@
   <a href="README.md">English</a> | <strong>中文</strong>
 </p>
 
-<p align="center"><em>“可上九天揽月<br>
-可下五洋捉鳖<br>
-谈笑凯歌还<br>
-世上无难事<br>
-只要肯登攀”</em><br>
+<p align="center"><em>“可上九天揽月，<br>
+可下五洋捉鳖，<br>
+谈笑凯歌还。<br>
+世上无难事，<br>
+只要肯登攀。”</em><br>
 <em>— 毛泽东</em></p>
 
 <p align="center"><em>“地球是人类的摇篮，但是人类不会永远生活在摇篮里。”</em><br>

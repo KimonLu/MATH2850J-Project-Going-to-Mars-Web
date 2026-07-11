@@ -1,0 +1,342 @@
+{
+  "run_timestamp_utc": "2026-07-11T05:26:21.359763+00:00",
+  "software": {
+    "python": "3.13.5",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.17.0",
+    "matplotlib": "3.10.8",
+    "spiceypy": "8.1.2"
+  },
+  "methods": {
+    "lambert": "universal-variable Lagrange f-g with scipy.optimize.brentq",
+    "trajectory_validation": "scipy.integrate.solve_ivp DOP853",
+    "standish": "JPL 1800--2050 secular Keplerian elements; central-difference velocity",
+    "pareto": "strict nondominance in time of flight and total patched delta-v within the declared v-infinity analysis domain below 12 km/s at both endpoints"
+  },
+  "grid": {
+    "departure_start_utc": "2026-07-01",
+    "departure_end_utc": "2027-06-30",
+    "departure_step_days": 2,
+    "tof_start_days": 140,
+    "tof_end_days": 360,
+    "tof_step_days": 2,
+    "successful_cases": 20313,
+    "local_refinement_step_days": 0.25
+  },
+  "model_scope": {
+    "ephemeris": "NASA/JPL DE440s geometric states",
+    "frame": "ECLIPJ2000",
+    "observer": "SUN",
+    "aberration_correction": "NONE",
+    "departure_target": "EARTH",
+    "arrival_target": "MARS BARYCENTER",
+    "time_conversion": "UTC input converted by SPICE to ET/TDB",
+    "transfer": "zero-revolution prograde heliocentric two-body Lambert",
+    "departure": "patched-conic injection from 200 km circular LEO",
+    "arrival": "patched-conic capture into 250 km circular LMO",
+    "candidate_domain": "departure and arrival hyperbolic excess speeds below 12 km/s"
+  },
+  "constants": {
+    "mu_sun": 132712440041.27939,
+    "mu_earth": 398600.4355070226,
+    "mu_mars": 42828.37362069909,
+    "radius_earth": 6378.1366,
+    "radius_mars": 3396.19,
+    "au": 149597870.6136889
+  },
+  "kernels": {
+    "naif0012.tls": {
+      "sha256": "678e32bdb5a744117a467cd9601cd6b373f0e9bc9bbde1371d5eee39600a039b",
+      "bytes": 5257
+    },
+    "de440s.bsp": {
+      "sha256": "c1c7feeab882263fc493a9d5a5b2ddd71b54826cdf65d8d17a76126b260a49f2",
+      "bytes": 32726016
+    },
+    "gm_de440.tpc": {
+      "sha256": "924ddf4fb9ead9fe8a1aa55780bcabde40b09d00065d58226e24b68d8092f140",
+      "bytes": 12406
+    },
+    "pck00011.tpc": {
+      "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+      "bytes": 131226
+    }
+  },
+  "hohmann": {
+    "earth_radius_au": 1.00000261,
+    "mars_radius_au": 1.52371034,
+    "transfer_semimajor_au": 1.261856475,
+    "earth_circular_speed_km_s": 29.784652973954536,
+    "mars_circular_speed_km_s": 24.129143365187538,
+    "transfer_departure_speed_km_s": 32.72945483847577,
+    "transfer_arrival_speed_km_s": 21.48015892728856,
+    "heliocentric_departure_dv_km_s": 2.9448018645212315,
+    "heliocentric_arrival_dv_km_s": 2.648984437898978,
+    "heliocentric_total_dv_km_s": 5.5937863024202095,
+    "time_of_flight_days": 258.87098230811245,
+    "required_phase_angle_deg": 44.345619034596645,
+    "synodic_period_days": 779.9286464929216,
+    "transfer_specific_energy_mj_kg": -351.5169457669865,
+    "departure_energy_increment_mj_kg": 92.04583062246309,
+    "arrival_energy_increment_mj_kg": 60.40916599809967,
+    "leo_departure_dv_km_s": 3.6114094218398733,
+    "lmo_capture_dv_km_s": 2.096264389079047,
+    "patched_conic_total_dv_km_s": 5.70767381091892,
+    "earth_departure_c3_km2_s2": 8.671858021287722,
+    "oberth_energy_gain_ratio": 5.310927405080998
+  },
+  "candidate_missions": [
+    {
+      "departure_datetime_utc": "2026-11-01T06:00:00+00:00",
+      "departure_date": "2026-11-01",
+      "arrival_datetime_utc": "2027-09-07T12:00:00+00:00",
+      "arrival_date": "2027-09-07",
+      "tof_days": 310.25,
+      "c3_km2_s2": 9.272801896534844,
+      "departure_vinf_km_s": 3.045127566545422,
+      "arrival_vinf_km_s": 2.5680409136061044,
+      "leo_departure_dv_km_s": 3.6377461874335673,
+      "lmo_capture_dv_km_s": 2.05790514867883,
+      "total_patched_dv_km_s": 5.695651336112397,
+      "departure_energy_at_infinity_mj_kg": 4.636400948267422,
+      "transfer_angle_deg": 204.75950306257764,
+      "transfer_plane_inclination_deg": 1.0535428356006848,
+      "universal_z": 13.31375648394858,
+      "lambert_iterations": 15,
+      "specific_energy_start_km2_s2": -349.5210466089944,
+      "specific_energy_end_km2_s2": -349.5210466089952,
+      "specific_energy_mismatch_abs_km2_s2": 7.958078640513122e-13,
+      "angular_momentum_mismatch_rel": 1.9471195948349552e-16,
+      "departure_offset_days": -0.75,
+      "tof_offset_days": 0.25,
+      "design": "minimum_total_dv",
+      "departure_datetime": "NaT",
+      "arrival_datetime": "NaT"
+    },
+    {
+      "departure_datetime_utc": "2026-10-31T12:00:00+00:00",
+      "departure_date": "2026-10-31",
+      "arrival_datetime_utc": "2027-08-19T18:00:00+00:00",
+      "arrival_date": "2027-08-19",
+      "tof_days": 292.25,
+      "c3_km2_s2": 9.182179209026236,
+      "departure_vinf_km_s": 3.030211083245891,
+      "arrival_vinf_km_s": 2.71636491943108,
+      "leo_departure_dv_km_s": 3.633778477493765,
+      "lmo_capture_dv_km_s": 2.1288935227207304,
+      "total_patched_dv_km_s": 5.762672000214495,
+      "departure_energy_at_infinity_mj_kg": 4.591089604513118,
+      "transfer_angle_deg": 195.80811955167687,
+      "transfer_plane_inclination_deg": 0.4869662570983809,
+      "universal_z": 11.953545339944263,
+      "lambert_iterations": 14,
+      "specific_energy_start_km2_s2": -348.67768204883987,
+      "specific_energy_end_km2_s2": -348.6776820488388,
+      "specific_energy_mismatch_abs_km2_s2": 1.0800249583553523e-12,
+      "angular_momentum_mismatch_rel": 1.6990987220707037e-18,
+      "departure_offset_days": 0.5,
+      "tof_offset_days": -1.75,
+      "design": "minimum_c3",
+      "departure_datetime": "NaT",
+      "arrival_datetime": "NaT"
+    },
+    {
+      "departure_datetime_utc": "2026-11-18T00:00:00+00:00",
+      "departure_date": "2026-11-18",
+      "arrival_datetime_utc": "2027-07-28T00:00:00+00:00",
+      "arrival_date": "2027-07-28",
+      "tof_days": 252.0,
+      "c3_km2_s2": 12.6835446479199,
+      "departure_vinf_km_s": 3.561396446328308,
+      "arrival_vinf_km_s": 3.209868775460995,
+      "leo_departure_dv_km_s": 3.7860886346089284,
+      "lmo_capture_dv_km_s": 2.3861266926045337,
+      "total_patched_dv_km_s": 6.172215327213462,
+      "departure_energy_at_infinity_mj_kg": 6.34177232395995,
+      "transfer_angle_deg": 166.85762047194274,
+      "transfer_plane_inclination_deg": 1.0238225005638955,
+      "universal_z": 8.768408032483856,
+      "lambert_iterations": 13,
+      "specific_energy_start_km2_s2": -347.357969462797,
+      "specific_energy_end_km2_s2": -347.3579694627972,
+      "specific_energy_mismatch_abs_km2_s2": 2.2737367544323206e-13,
+      "angular_momentum_mismatch_rel": 1.946373419722425e-16,
+      "departure_offset_days": NaN,
+      "tof_offset_days": NaN,
+      "design": "fast_within_0.5",
+      "departure_datetime": "2026-11-18 00:00:00+00:00",
+      "arrival_datetime": "2027-07-28 00:00:00+00:00"
+    },
+    {
+      "departure_datetime_utc": "2026-12-06T00:00:00+00:00",
+      "departure_date": "2026-12-06",
+      "arrival_datetime_utc": "2027-06-26T00:00:00+00:00",
+      "arrival_date": "2027-06-26",
+      "tof_days": 202.0,
+      "c3_km2_s2": 23.038301161504098,
+      "departure_vinf_km_s": 4.799823034394508,
+      "arrival_vinf_km_s": 4.522880532350616,
+      "leo_departure_dv_km_s": 4.225224682965004,
+      "lmo_capture_dv_km_s": 3.2021191033495393,
+      "total_patched_dv_km_s": 7.427343786314544,
+      "departure_energy_at_infinity_mj_kg": 11.519150580752049,
+      "transfer_angle_deg": 133.29057076111795,
+      "transfer_plane_inclination_deg": 0.9761176299039505,
+      "universal_z": 5.547359759694105,
+      "lambert_iterations": 11,
+      "specific_energy_start_km2_s2": -342.64178022670023,
+      "specific_energy_end_km2_s2": -342.6417802266999,
+      "specific_energy_mismatch_abs_km2_s2": 3.410605131648481e-13,
+      "angular_momentum_mismatch_rel": 1.9478060721288298e-16,
+      "departure_offset_days": NaN,
+      "tof_offset_days": NaN,
+      "design": "balanced_pareto",
+      "departure_datetime": "2026-12-06 00:00:00+00:00",
+      "arrival_datetime": "2027-06-26 00:00:00+00:00"
+    }
+  ],
+  "model_comparison_minima": [
+    {
+      "model": "phase_anchored_circular_coplanar",
+      "departure_datetime_utc": "2026-12-06T00:00:00+00:00",
+      "arrival_datetime_utc": "2027-08-21T00:00:00+00:00",
+      "tof_days": 258.0,
+      "c3_km2_s2": 8.677359520652045,
+      "arrival_vinf_km_s": 2.6491036452071537,
+      "total_patched_dv_km_s": 5.707972364627587
+    },
+    {
+      "model": "standish_secular_elements",
+      "departure_datetime_utc": "2026-10-31T06:00:00+00:00",
+      "arrival_datetime_utc": "2027-09-07T06:00:00+00:00",
+      "tof_days": 311.0,
+      "c3_km2_s2": 9.228826569341901,
+      "arrival_vinf_km_s": 2.5713431043270045,
+      "total_patched_dv_km_s": 5.695272943121892
+    },
+    {
+      "model": "de440s_ephemeris",
+      "departure_datetime_utc": "2026-11-01T06:00:00+00:00",
+      "arrival_datetime_utc": "2027-09-07T12:00:00+00:00",
+      "tof_days": 310.25,
+      "c3_km2_s2": 9.272801896534844,
+      "arrival_vinf_km_s": 2.5680409136061044,
+      "total_patched_dv_km_s": 5.695651336112397
+    }
+  ],
+  "standish_state_summary": [
+    {
+      "body": "Earth--Moon barycentre",
+      "median_position_difference_km": 2148.5191807256933,
+      "maximum_position_difference_km": 10947.426450908779,
+      "median_velocity_difference_m_s": 0.47742248931889986,
+      "maximum_velocity_difference_m_s": 1.6523872768786754
+    },
+    {
+      "body": "Mars barycentre",
+      "median_position_difference_km": 37494.240564152664,
+      "maximum_position_difference_km": 61187.468845442156,
+      "median_velocity_difference_m_s": 3.1474689058454923,
+      "maximum_velocity_difference_m_s": 5.254805480102122
+    }
+  ],
+  "fast_threshold_sensitivity": [
+    {
+      "allowed_dv_above_minimum_km_s": 0.25,
+      "departure_datetime_utc": "2026-11-14T00:00:00+00:00",
+      "arrival_datetime_utc": "2027-08-11T00:00:00+00:00",
+      "tof_days": 270.0,
+      "total_patched_dv_km_s": 5.93565498756467,
+      "penalty_above_minimum_km_s": 0.23970746223876027
+    },
+    {
+      "allowed_dv_above_minimum_km_s": 0.5,
+      "departure_datetime_utc": "2026-11-18T00:00:00+00:00",
+      "arrival_datetime_utc": "2027-07-28T00:00:00+00:00",
+      "tof_days": 252.0,
+      "total_patched_dv_km_s": 6.172215327213462,
+      "penalty_above_minimum_km_s": 0.4762678018875528
+    },
+    {
+      "allowed_dv_above_minimum_km_s": 0.75,
+      "departure_datetime_utc": "2026-11-24T00:00:00+00:00",
+      "arrival_datetime_utc": "2027-07-20T00:00:00+00:00",
+      "tof_days": 238.0,
+      "total_patched_dv_km_s": 6.433311228056454,
+      "penalty_above_minimum_km_s": 0.7373637027305451
+    },
+    {
+      "allowed_dv_above_minimum_km_s": 1.0,
+      "departure_datetime_utc": "2026-11-28T00:00:00+00:00",
+      "arrival_datetime_utc": "2027-07-14T00:00:00+00:00",
+      "tof_days": 228.0,
+      "total_patched_dv_km_s": 6.6568755151568855,
+      "penalty_above_minimum_km_s": 0.9609279898309762
+    }
+  ],
+  "validation": {
+    "endpoint_position_error_km": 0.0011907343415347713,
+    "endpoint_velocity_error_km_s": 1.4802116669649842e-10,
+    "specific_energy_drift_abs_km2_s2": 7.16227077646181e-10,
+    "specific_energy_drift_rel": 2.049167237838518e-12,
+    "angular_momentum_drift_rel": 7.506268592857192e-13,
+    "ode_function_evaluations": 512
+  },
+  "grid_convergence": [
+    {
+      "grid_label": "4-day subsample",
+      "departure_date": "2026-11-02",
+      "tof_days": 308.0,
+      "total_patched_dv_km_s": 5.6963527335012945
+    },
+    {
+      "grid_label": "2-day production grid",
+      "departure_date": "2026-11-02",
+      "tof_days": 310.0,
+      "total_patched_dv_km_s": 5.695947525325909
+    },
+    {
+      "grid_label": "local 0.25-day refinement",
+      "departure_date": "2026-11-01",
+      "tof_days": 310.25,
+      "total_patched_dv_km_s": 5.695651336112397
+    }
+  ],
+  "outputs": {
+    "tables": [
+      "data/output/q3/candidate_missions.csv",
+      "data/output/q3/circular_coplanar_candidates.csv",
+      "data/output/q3/circular_coplanar_grid.csv",
+      "data/output/q3/fast_threshold_sensitivity.csv",
+      "data/output/q3/grid_convergence.csv",
+      "data/output/q3/ideal_hohmann.csv",
+      "data/output/q3/minimum_c3_refinement.csv",
+      "data/output/q3/minimum_dv_refinement.csv",
+      "data/output/q3/model_comparison_minima.csv",
+      "data/output/q3/optimal_solution_stability.csv",
+      "data/output/q3/pareto_front.csv",
+      "data/output/q3/porkchop_grid.csv",
+      "data/output/q3/standish_de440s_state_differences.csv",
+      "data/output/q3/standish_de440s_state_summary.csv",
+      "data/output/q3/standish_grid.csv",
+      "data/output/q3/standish_minimum_dv_refinement.csv"
+    ],
+    "figures": [
+      "figures/porkchop_2026_2027.png",
+      "figures/porkchop_circular_coplanar_2026_2027.png",
+      "figures/standish_de440s_state_difference.png",
+      "figures/optimal_solution_stability.png",
+      "figures/pareto_time_delta_v.png",
+      "figures/lambert_transfer_3d.png"
+    ],
+    "tex": [
+      "doc/generated/results_macros.tex",
+      "doc/generated/candidate_rows.tex",
+      "doc/generated/convergence_rows.tex",
+      "doc/generated/model_comparison_rows.tex",
+      "doc/generated/fast_threshold_rows.tex"
+    ]
+  },
+  "random_seed": null
+}

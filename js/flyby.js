@@ -296,7 +296,7 @@
         render();
       });
       bindInput(eventSel, () => { applyEvent(); render(); });
-      [vinfSlider, altSlider, angleSlider, turnSel].forEach(bindInput);
+      [vinfSlider, altSlider, angleSlider, turnSel].forEach(element => bindInput(element));
       ready = true;
     },
     onShow() { render(); },

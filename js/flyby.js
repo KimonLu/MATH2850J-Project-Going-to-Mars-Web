@@ -120,7 +120,7 @@
     line(cx, plot.top, cx, plot.bottom, "rgba(154,167,194,.2)", 1);
     ctx.fillStyle = "#9aa7c2";
     ctx.font = "11px Segoe UI, sans-serif";
-    ctx.fillText(`1 ${i18n("fly_km")} = ${number(1 / scale, 0)} px`, plot.left, cv.height - 34);
+    ctx.fillText(`1 px = ${number(1 / scale, 0)} ${i18n("fly_km")}`, plot.left, cv.height - 34);
 
     const thetaInf = Math.acos(-1 / s.ecc);
     const p = s.rp * (1 + s.ecc);
@@ -242,8 +242,8 @@
     document.querySelectorAll(".fly-helio-only").forEach(element => element.hidden = planetView);
     const history = planetView && modeSel.value === "history";
     eventSel.disabled = !history || !eventSel.options.length;
-    vinfSlider.disabled = history;
-    altSlider.disabled = history;
+    vinfSlider.disabled = history && eventSel.options.length > 0;
+    altSlider.disabled = history && eventSel.options.length > 0;
     const event = selectedEvent();
     const status = byId("flyEventStatus");
     if (!planetView) status.textContent = "";

@@ -23,6 +23,7 @@
 
 - 项目网页：[kimonlu.github.io/MATH2850J-Project-Going-to-Mars-Web](https://kimonlu.github.io/MATH2850J-Project-Going-to-Mars-Web/)
 - 仓库地址：[KimonLu/MATH2850J-Project-Going-to-Mars-Web](https://github.com/KimonLu/MATH2850J-Project-Going-to-Mars-Web)
+- 项目报告：[Project/doc/285Proj_Group19.pdf](https://github.com/KimonLu/MATH2850J-Project-Going-to-Mars-Web/blob/main/Project/doc/285Proj_Group19.pdf)
 
 ## 项目信息
 

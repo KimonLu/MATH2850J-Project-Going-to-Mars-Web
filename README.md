@@ -23,6 +23,7 @@ This repository contains the companion visualization website for the MATH2850J g
 
 - Website: [kimonlu.github.io/MATH2850J-Project-Going-to-Mars-Web](https://kimonlu.github.io/MATH2850J-Project-Going-to-Mars-Web/)
 - Repository: [KimonLu/MATH2850J-Project-Going-to-Mars-Web](https://github.com/KimonLu/MATH2850J-Project-Going-to-Mars-Web)
+- Report: [Project/doc/285Proj_Group19.pdf](https://github.com/KimonLu/MATH2850J-Project-Going-to-Mars-Web/blob/main/Project/doc/285Proj_Group19.pdf)
 
 ## Project Information
 
